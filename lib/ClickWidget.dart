@@ -24,9 +24,13 @@ class SampleAppPage extends StatefulWidget {
 class _SampleAppPageState extends State<SampleAppPage> {
   String textToShow = " 我喜欢flutter";
 
+  bool isShowWidget = false;
+
+//  点击事件调用的方法，控制对变量的操作
   void _updateText() {
     setState(() {
       textToShow = "flutter 是很好学习的";
+      isShowWidget = !isShowWidget;
     });
   }
 
@@ -37,7 +41,8 @@ class _SampleAppPageState extends State<SampleAppPage> {
         title: Text("这是个实例代码"),
       ),
       body: Center(
-        child: Text(textToShow),
+//        child: Text(textToShow),
+        child: changeCenterView(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _updateText,
@@ -45,5 +50,17 @@ class _SampleAppPageState extends State<SampleAppPage> {
         child: Icon(Icons.update),
       ),
     );
+  }
+
+//  根据状态改变view的样式，根据变量的操作反应到view本身
+  changeCenterView() {
+    if (isShowWidget) {
+      return Text('我是改变前的text');
+    } else {
+      return MaterialButton(
+        onPressed: () {},
+        child: Text('这个是materialbutton'),
+      );
+    }
   }
 }
