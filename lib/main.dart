@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
+
 /*添加对应的依赖项目*/
-//import 'package:english_words/english_words.dart';
+import 'package:english_words/english_words.dart';
 
 void main() => runApp(CustomApp());
 
+/// 创建动态的控件类型
+class RandomWordState extends State<RandomWords> {
+  @override
+  Widget build(BuildContext context) {
+    final wordPair = WordPair.random();
+    return Text(wordPair.asPascalCase);
+
+  }
+}
+
+class RandomWords extends StatefulWidget {
+  @override
+  State createState() {
+    return RandomWordState();
+  }
+}
+
+/// 添加固定状态的控件类型
 class CustomApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,7 +33,10 @@ class CustomApp extends StatelessWidget {
           title: Text('welcom to my app'),
         ),
         body: Center(
-          child: Text('helloworld '),
+//          child: Text('helloworld '),
+
+        /*创建动态的控件*/
+        child: RandomWords(),
         ),
       ),
     );
@@ -115,7 +137,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .display1,
             ),
           ],
         ),
