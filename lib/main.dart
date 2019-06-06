@@ -3,15 +3,62 @@ import 'package:flutter/material.dart';
 /*添加对应的依赖项目*/
 import 'package:english_words/english_words.dart';
 
-void main() => runApp(CustomApp());
+//void main() => runApp(CustomApp());
+void main() => runApp(ListViewApp());
+
+class ListViewApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '这是一个listview',
+      home: RandomWords(),
+    );
+  }
+}
 
 /// 创建动态的控件类型
 class RandomWordState extends State<RandomWords> {
+  final _suggestions = <WordPair>[];
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+
   @override
   Widget build(BuildContext context) {
-    final wordPair = WordPair.random();
-    return Text(wordPair.asPascalCase);
+    /*生成的常规字符串textview*/
+//    final wordPair = WordPair.random();
+//    return Text(wordPair.asPascalCase);
 
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('this is listview'),
+      ),
+      body: _buildSuggestions(),
+    );
+  }
+
+  /// 创建listview的widget
+  Widget _buildSuggestions() {
+    return ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        itemBuilder: (context, i) {
+          if (i.isOdd) {
+            return Divider();
+          }
+          final index = i ~/ 2;
+          if (index >= _suggestions.length) {
+            _suggestions.addAll(generateWordPairs().take(10));
+          }
+          return _buildRow(_suggestions[index]);
+        });
+  }
+
+  ///  创建单行的widget控件
+  Widget _buildRow(WordPair pair) {
+    return ListTile(
+      title: Text(
+        pair.asPascalCase,
+        style: _biggerFont,
+      ),
+    );
   }
 }
 
@@ -35,8 +82,9 @@ class CustomApp extends StatelessWidget {
         body: Center(
 //          child: Text('helloworld '),
 
-        /*创建动态的控件*/
-        child: RandomWords(),
+//          /*创建动态的控件*/
+          child: RandomWords(),
+//
         ),
       ),
     );
@@ -137,10 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .display1,
+              style: Theme.of(context).textTheme.display1,
             ),
           ],
         ),
