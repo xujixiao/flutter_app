@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 /*添加对应的依赖项目*/
 import 'package:english_words/english_words.dart';
 
+import 'ClickWidget.dart';
+import 'TextWidget.dart';
+
 //void main() => runApp(CustomApp());
-void main() => runApp(ListViewApp());
+//void main() => runApp(ListViewApp());
+
+//void main() => runApp(TextWidgetApp());
+void main() => runApp(ClickWidget());
 
 class ListViewApp extends StatelessWidget {
   @override
