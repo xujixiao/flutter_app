@@ -10,7 +10,129 @@ import 'TextWidget.dart';
 //void main() => runApp(ListViewApp());
 
 //void main() => runApp(TextWidgetApp());
-void main() => runApp(ClickWidget());
+//void main() => runApp(ClickWidget());
+
+void main() {
+  runApp(MaterialApp(
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+      textSelectionColor: Colors.red,
+    ),
+    home: MainViewApp(),
+    routes: <String, WidgetBuilder>{
+      '/goListView': (BuildContext context) => ListViewApp(),
+      '/goTextView': (BuildContext context) => CustomApp(),
+      '/goFlutterApp': (BuildContext context) => ClickWidget(),
+    },
+  ));
+}
+
+class MainViewApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '测试一个新的布局',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        textSelectionColor: Colors.red,
+        backgroundColor: Colors.white,
+      ),
+      home: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          MaterialButton(
+            child: Text(
+              '跳转listview',
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed("/goListView");
+            },
+          ),
+          MaterialButton(
+            child: Text(
+              'goTextView',
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed("/goTextView");
+              print("click");
+            },
+          ),
+          MaterialButton(
+            child: Text(
+              'goFlutterApp',
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text('my page'),
+                  ),
+                  body: Center(
+                    child: FlatButton(
+                        onPressed: () {
+                          print('xujixiao');
+                        },
+                        child: Text('pop')),
+                  ),
+                );
+              }));
+            },
+          ),
+          Text(
+            '中华人民共和国',
+            style: TextStyle(fontSize: 19),
+          ),
+          Icon(
+            Icons.star,
+            color: Colors.red[500],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text(
+                '测试代码',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w800,
+                  fontFamily: 'roboto',
+                  letterSpacing: 0.5,
+                  fontSize: 20,
+                ),
+                textDirection: TextDirection.ltr,
+                textAlign: TextAlign.end,
+              ),
+              GestureDetector(
+                onTap: () {
+                  print("徐继晓点击了row 中的gesture控件");
+                },
+                child: Container(
+                  height: 39,
+//                padding: const EdgeInsets.all(8.0),
+//                margin: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Center(
+                    child: Text(
+                      "点击一下",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  ),
+                ),
+              ),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: new Text('我是一段文本'),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class ListViewApp extends StatelessWidget {
   @override
@@ -25,7 +147,11 @@ class ListViewApp extends StatelessWidget {
 /// 创建动态的控件类型
 class RandomWordState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+  final _biggerFont = const TextStyle(
+    fontSize: 18.0,
+    fontWeight: FontWeight.bold,
+    color: Colors.blue,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +186,32 @@ class RandomWordState extends State<RandomWords> {
   ///  创建单行的widget控件
   Widget _buildRow(WordPair pair) {
     return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
+      title: Row(
+        children: <Widget>[
+          Text(
+            pair.asPascalCase,
+            style: _biggerFont,
+          ),
+          Column(
+            children: <Widget>[
+              Text(
+                '徐继晓',
+                style: TextStyle(fontSize: 20, color: Colors.red),
+              ),
+              Text(
+                '徐继晓',
+                style: TextStyle(fontSize: 20, color: Colors.red),
+              ),
+            ],
+          )
+        ],
       ),
+      onTap: () {
+        print("徐继晓点击了一下");
+      },
+      onLongPress: () {
+        print("徐继晓长安了一下");
+      },
     );
   }
 }
