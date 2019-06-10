@@ -5,6 +5,7 @@ import 'package:english_words/english_words.dart';
 
 import 'ClickWidget.dart';
 import 'TextWidget.dart';
+import 'storage/StorageUtils.dart';
 
 //void main() => runApp(CustomApp());
 //void main() => runApp(ListViewApp());
@@ -27,6 +28,47 @@ void main() {
   ));
 }
 
+class TestMainViewApp extends StatelessWidget {
+  TextStyle getDefaultTextStyle() {
+    return TextStyle(color: Colors.red, fontSize: 20);
+  }
+
+  Widget getTextWidget() {
+    return Container(
+      padding: EdgeInsets.all(18.0),
+      child: Card(
+        margin: EdgeInsets.all(38.0),
+        color: Colors.blue,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.3))),
+        child: Text('hello world', style: getDefaultTextStyle()),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: 'flutter study',
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text('flutter study'),
+          ),
+          body: new Center(
+            child: Column(
+              children: <Widget>[
+                Text(
+                  '测试',
+                  style: getDefaultTextStyle(),
+                ),
+                getTextWidget(),
+              ],
+            ),
+          )),
+    );
+  }
+}
+
 class MainViewApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -37,98 +79,129 @@ class MainViewApp extends StatelessWidget {
         textSelectionColor: Colors.red,
         backgroundColor: Colors.white,
       ),
-      home: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          MaterialButton(
-            child: Text(
-              '跳转listview',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-            onPressed: () {
-              Navigator.of(context).pushNamed("/goListView");
-            },
-          ),
-          MaterialButton(
-            child: Text(
-              'goTextView',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-            onPressed: () {
-              Navigator.of(context).pushNamed("/goTextView");
-              print("click");
-            },
-          ),
-          MaterialButton(
-            child: Text(
-              'goFlutterApp',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) {
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text('my page'),
-                  ),
-                  body: Center(
-                    child: FlatButton(
-                        onPressed: () {
-                          print('xujixiao');
-                        },
-                        child: Text('pop')),
-                  ),
-                );
-              }));
-            },
-          ),
-          Text(
-            '中华人民共和国',
-            style: TextStyle(fontSize: 19),
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text(
-                '测试代码',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.w800,
-                  fontFamily: 'roboto',
-                  letterSpacing: 0.5,
-                  fontSize: 20,
-                ),
-                textDirection: TextDirection.ltr,
-                textAlign: TextAlign.end,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('第一个flutter项目'),
+          backgroundColor: Colors.blue,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+            items:const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.star),
+                title:Text('我的'),
               ),
-              GestureDetector(
-                onTap: () {
-                  print("徐继晓点击了row 中的gesture控件");
-                },
-                child: Container(
-                  height: 39,
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                title: Text('你的')
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.update),
+                title: Text('flutter')
+              )
+            ]
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            MaterialButton(
+              child: Text(
+                '跳转listview',
+                style: TextStyle(fontSize: 18, color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed("/goListView");
+              },
+            ),
+            MaterialButton(
+              child: Text(
+                'goTextView',
+                style: TextStyle(fontSize: 18, color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed("/goTextView");
+                print("click");
+              },
+            ),
+            MaterialButton(
+              child: Text(
+                'goFlutterApp',
+                style: TextStyle(fontSize: 18, color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      title: Text('my page'),
+                    ),
+                    body: Center(
+                      child: FlatButton(
+                          onPressed: () {
+                            print('xujixiao');
+                          },
+                          child: Text('pop')),
+                    ),
+                  );
+                }));
+              },
+            ),
+            Text(
+              '中华人民共和国',
+              style: TextStyle(fontSize: 19),
+            ),
+            Icon(
+              Icons.star,
+              color: Colors.red[500],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(
+                  '测试代码',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w800,
+                    fontFamily: 'roboto',
+                    letterSpacing: 0.5,
+                    fontSize: 20,
+                  ),
+                  textDirection: TextDirection.ltr,
+                  textAlign: TextAlign.end,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    print("徐继晓点击了row 中的gesture控件");
+                    StorageUtils.set("name", "xujixiao");
+                  },
+                  onLongPress: () {
+                    getdata() async {
+                      String token = await StorageUtils.get("name");
+                      print(token);
+                    }
+
+                    getdata();
+                  },
+                  child: Container(
+                    height: 39,
 //                padding: const EdgeInsets.all(8.0),
 //                margin: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Center(
-                    child: Text(
-                      "点击一下",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    child: Center(
+                      child: Text(
+                        "点击一下",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: new Text('我是一段文本'),
-              )
-            ],
-          ),
-        ],
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: new Text('我是一段文本'),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

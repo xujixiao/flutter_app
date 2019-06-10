@@ -1,6 +1,22 @@
 import 'package:flutter/material.dart';
 
 class TextWidgetApp extends StatelessWidget {
+  Widget buildImage() {
+    // ...
+    return new DecoratedBox(
+      decoration: new BoxDecoration(
+        color: Colors.red,
+        image: new DecorationImage(
+          image: new AssetImage('graphics/beizhanyong.png'),
+          // ...
+        ),
+        shape: BoxShape.rectangle
+        // ...
+      ),
+    );
+    // ...
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,12 +28,7 @@ class TextWidgetApp extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        body: Center(
-          child: Text(
-            '测试textview',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
-          ),
-        ),
+        body: Center(child: buildImage()),
       ),
     );
   }
