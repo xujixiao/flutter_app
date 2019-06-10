@@ -1,17 +1,9 @@
+import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
-/*添加对应的依赖项目*/
-import 'package:english_words/english_words.dart';
-
 import 'ClickWidget.dart';
-import 'TextWidget.dart';
-import 'storage/StorageUtils.dart';
-
-//void main() => runApp(CustomApp());
-//void main() => runApp(ListViewApp());
-
-//void main() => runApp(TextWidgetApp());
-//void main() => runApp(ClickWidget());
+import 'ListViewTest.dart';
+import 'MyGridView.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -24,6 +16,8 @@ void main() {
       '/goListView': (BuildContext context) => ListViewApp(),
       '/goTextView': (BuildContext context) => CustomApp(),
       '/goFlutterApp': (BuildContext context) => ClickWidget(),
+      '/goMyApp': (BuildContext context) => MyApp(),
+//      '/goMyListView': (BuildContext context) => ListViewApp(),
     },
   ));
 }
@@ -70,6 +64,8 @@ class TestMainViewApp extends StatelessWidget {
 }
 
 class MainViewApp extends StatelessWidget {
+  final int selectIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -85,21 +81,25 @@ class MainViewApp extends StatelessWidget {
           backgroundColor: Colors.blue,
         ),
         bottomNavigationBar: BottomNavigationBar(
-            items:const <BottomNavigationBarItem>[
+            backgroundColor: Colors.yellow,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            currentIndex: 1,
+            items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.star),
-                title:Text('我的'),
-              ),
+                  icon: Icon(Icons.star),
+                  title: Text('我的'),
+                  activeIcon: Icon(Icons.print),
+                  backgroundColor: Colors.black),
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                title: Text('你的')
-              ),
+                  icon: Icon(Icons.home),
+                  activeIcon: Icon(Icons.access_alarm),
+                  title: Text('你的')),
               BottomNavigationBarItem(
-                icon: Icon(Icons.update),
-                title: Text('flutter')
-              )
-            ]
-        ),
+                  icon: Icon(Icons.update),
+                  activeIcon: Icon(Icons.ac_unit),
+                  title: Text('flutter'))
+            ]),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,17 +171,9 @@ class MainViewApp extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    print("徐继晓点击了row 中的gesture控件");
-                    StorageUtils.set("name", "xujixiao");
+                    Navigator.pushNamed(context, "/goMyApp");
                   },
-                  onLongPress: () {
-                    getdata() async {
-                      String token = await StorageUtils.get("name");
-                      print(token);
-                    }
-
-                    getdata();
-                  },
+                  onLongPress: () {},
                   child: Container(
                     height: 39,
 //                padding: const EdgeInsets.all(8.0),
@@ -189,7 +181,7 @@ class MainViewApp extends StatelessWidget {
                     child: Center(
                       child: Text(
                         "点击一下",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(color: Colors.black, fontSize: 20),
                       ),
                     ),
                   ),
@@ -197,6 +189,26 @@ class MainViewApp extends StatelessWidget {
                 Directionality(
                   textDirection: TextDirection.rtl,
                   child: new Text('我是一段文本'),
+                ),
+                RaisedButton(
+                  child: Text('去listview测试'),
+                  onPressed: () {
+//                    Navigator.pushNamed(context,"/goMyListView");
+                    print("去gridview");
+                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                      return MyGridView();
+                    }));
+                  },
+                  color: Colors.blue,
+                ),
+                FloatingActionButton(
+                  child: Text('去viewlist'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return ListViewTest();
+                    }));
+                  },
                 )
               ],
             ),
@@ -271,11 +283,11 @@ class RandomWordState extends State<RandomWords> {
                 '徐继晓',
                 style: TextStyle(fontSize: 20, color: Colors.red),
               ),
-              Text(
-                '徐继晓',
-                style: TextStyle(fontSize: 20, color: Colors.red),
-              ),
             ],
+          ),
+          Icon(
+            Icons.home,
+            color: Colors.red,
           )
         ],
       ),
@@ -306,12 +318,23 @@ class CustomApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('welcom to my app'),
         ),
-        body: Center(
-//          child: Text('helloworld '),
-
-//          /*创建动态的控件*/
-          child: RandomWords(),
-//
+        body: Container(
+          constraints: BoxConstraints.expand(
+            height: Theme.of(context).textTheme.display1.fontSize * 1.1 + 200.0,
+          ),
+          padding: const EdgeInsets.all(8.0),
+          color: Colors.blue[600],
+          alignment: Alignment.center,
+          child: Column(
+            children: <Widget>[
+              Text('Hello World',
+                  style: Theme.of(context)
+                      .textTheme
+                      .display1
+                      .copyWith(color: Colors.white)),
+            ],
+          ),
+          transform: Matrix4.rotationZ(0.1),
         ),
       ),
     );
