@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'ClickWidget.dart';
 import 'ListViewTest.dart';
 import 'MyGridView.dart';
+import 'MyTabTopWidget.dart';
+import 'MyTextField.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -66,6 +68,34 @@ class TestMainViewApp extends StatelessWidget {
 class MainViewApp extends StatelessWidget {
   final int selectIndex = 0;
 
+  Future<void> _neverSatisfied(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Rewind and remember'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('You will never be satisfied.'),
+                Text('You\’re like me. I’m never satisfied.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Regret'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -100,119 +130,181 @@ class MainViewApp extends StatelessWidget {
                   activeIcon: Icon(Icons.ac_unit),
                   title: Text('flutter'))
             ]),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            MaterialButton(
-              child: Text(
-                '跳转listview',
-                style: TextStyle(fontSize: 18, color: Colors.red),
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed("/goListView");
-              },
-            ),
-            MaterialButton(
-              child: Text(
-                'goTextView',
-                style: TextStyle(fontSize: 18, color: Colors.red),
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed("/goTextView");
-                print("click");
-              },
-            ),
-            MaterialButton(
-              child: Text(
-                'goFlutterApp',
-                style: TextStyle(fontSize: 18, color: Colors.red),
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: Text('my page'),
-                    ),
-                    body: Center(
-                      child: FlatButton(
-                          onPressed: () {
-                            print('xujixiao');
-                          },
-                          child: Text('pop')),
-                    ),
-                  );
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+              child: Text("tab测试"),
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                  return MyTabTopWidget();
                 }));
               },
-            ),
-            Text(
-              '中华人民共和国',
-              style: TextStyle(fontSize: 19),
-            ),
-            Icon(
-              Icons.star,
-              color: Colors.red[500],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                  '测试代码',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.w800,
-                    fontFamily: 'roboto',
-                    letterSpacing: 0.5,
-                    fontSize: 20,
-                  ),
-                  textDirection: TextDirection.ltr,
-                  textAlign: TextAlign.end,
+
+          ),
+              RaisedButton(
+                child: Text('输入文本'),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return MyTextField();
+                  }));
+                },
+              ),
+              MaterialButton(
+                child: Text(
+                  '跳转listview',
+                  style: TextStyle(fontSize: 18, color: Colors.red),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/goMyApp");
-                  },
-                  onLongPress: () {},
-                  child: Container(
-                    height: 39,
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/goListView");
+                },
+              ),
+              MaterialButton(
+                child: Text(
+                  'goTextView',
+                  style: TextStyle(fontSize: 18, color: Colors.red),
+                ),
+                onPressed: () {
+//                  Navigator.of(context).pushNamed("/goTextView");
+//                弹出对话框的方式
+                  _neverSatisfied(context);
+                },
+              ),
+              MaterialButton(
+                child: Text(
+                  'goFlutterApp',
+                  style: TextStyle(fontSize: 18, color: Colors.red),
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return Scaffold(
+                      appBar: AppBar(
+                        title: Text('my page'),
+                      ),
+                      body: Center(
+                        child: FlatButton(
+                            onPressed: () {
+                              print('xujixiao');
+                            },
+                            child: Text('pop')),
+                      ),
+                    );
+                  }));
+                },
+              ),
+              Text(
+                '中华人民共和国',
+                style: TextStyle(fontSize: 19),
+              ),
+              Icon(
+                Icons.star,
+                color: Colors.red[500],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  /*常规的文本类型*/
+                  Text(
+                    '测试代码',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'roboto',
+                      letterSpacing: 0.5,
+                      fontSize: 20,
+                    ),
+                    textDirection: TextDirection.ltr,
+                    textAlign: TextAlign.end,
+                  ),
+
+                  /*手势的使用方法*/
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/goMyApp");
+                    },
+                    onLongPress: () {},
+                    child: Container(
+                      height: 39,
 //                padding: const EdgeInsets.all(8.0),
 //                margin: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Center(
-                      child: Text(
-                        "点击一下",
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      child: Center(
+                        child: Text(
+                          "点击一下",
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: new Text('我是一段文本'),
-                ),
-                RaisedButton(
-                  child: Text('去listview测试'),
-                  onPressed: () {
+                  Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: new Text('我是一段文本'),
+                  ),
+
+                  /*button的常规用法*/
+                  RaisedButton(
+                    child: Text('去listview测试'),
+                    onPressed: () {
 //                    Navigator.pushNamed(context,"/goMyListView");
-                    print("去gridview");
-                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                      return MyGridView();
-                    }));
-                  },
-                  color: Colors.blue,
-                ),
-                FloatingActionButton(
-                  child: Text('去viewlist'),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return ListViewTest();
-                    }));
-                  },
-                )
-              ],
-            ),
-          ],
+                      print("去gridview");
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return MyGridView();
+                      }));
+                    },
+                    color: Colors.blue,
+                  ),
+
+                  /*row的用法基本类型*/
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        FloatingActionButton(
+                          child: Icon(Icons.home),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return ListViewTest();
+                            }));
+                          },
+                        ),
+                        Container(
+                          child: Text('container控件',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.red)),
+                        ),
+                        Image.network(
+                          "https://upload-images.jianshu.io/upload_images/1417629-53f7d0902457cbe6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+                          width: 260,
+                          height: 100,
+                          fit: BoxFit.fill,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+
+              /*image 的用法*/
+              Image.asset(
+                'graphics/beizhanyong.png',
+                filterQuality: FilterQuality.high,
+                fit: BoxFit.fill,
+                width: 200,
+                height: 200,
+              ),
+              AlertDialog(
+                title: Text('对话框的标题'),
+                contentPadding: EdgeInsets.all(20.0),
+                content: Text('我是对话框的内容'),
+                contentTextStyle: TextStyle(fontSize: 20, color: Colors.red),
+              )
+            ],
+          ),
         ),
       ),
     );

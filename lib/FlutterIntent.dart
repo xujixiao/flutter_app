@@ -26,9 +26,28 @@ class DemoApp extends StatelessWidget {
 class DemoApp2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('xujixiao2'),
+    return MaterialApp(
+      title: 'scollable layout',
+      home: Scaffold(
+        appBar: AppBar(
+            title: Text('scrollable layout'),
+          backgroundColor: Colors.blue,
+        ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: <Widget>[
+              AlertDialog(
+                title: Text('对话框的标题'),
+                contentPadding: EdgeInsets.all(20.0),
+                content: Text('我是对话框的内容'),
+                contentTextStyle: TextStyle(fontSize: 20,color: Colors.red),
+              )
+            ],
+          ),
+        ),
+
+
       ),
     );
   }

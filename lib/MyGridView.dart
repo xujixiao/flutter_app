@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
+/// gridview的用法
 class MyGridView extends StatelessWidget {
   ListTile getDefaultTile() {
     return ListTile(
@@ -8,7 +8,6 @@ class MyGridView extends StatelessWidget {
         print("点击了gridview");
       },
       title: Text(
-
         '中国',
         style: TextStyle(
             fontSize: 20, color: Colors.blue, backgroundColor: Colors.yellow),
