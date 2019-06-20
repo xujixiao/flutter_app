@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
+import 'TabFragment1.dart';
+import 'TestNetDataListView.dart';
+
 class MyTabTopWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -51,13 +54,13 @@ class _MyTabState extends State<MyTab> with SingleTickerProviderStateMixin {
         ),
         body: TabBarView(controller: tabController, children: <Widget>[
           Center(
-            child: Text("百度"),
+            child: TabFragment1(),
           ),
           Center(
-            child: Text("腾讯"),
+            child: TestNetDataListView(),
           ),
           Center(
-            child: Text("阿里"),
+            child: Text("阿里巴巴"),
           ),
         ]),
       ),

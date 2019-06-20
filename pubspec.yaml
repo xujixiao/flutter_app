@@ -27,6 +27,9 @@ dependencies:
 #  添加一个英语的一个依赖到项目中
 
   shared_preferences: ^0.4.2 #简单数据存储
+  http: '>=0.11.3+12'
+  #toast
+  fluttertoast: ^2.0.9
 #  open_file: ^2.0.1+1
 dev_dependencies:
   flutter_test:

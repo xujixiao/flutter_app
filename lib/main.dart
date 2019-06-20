@@ -7,6 +7,11 @@ import 'MyGridView.dart';
 import 'MyTabTopWidget.dart';
 import 'MyTextField.dart';
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import 'dialog/DialogUtils.dart';
+
 void main() {
   runApp(MaterialApp(
     theme: ThemeData(
@@ -68,32 +73,13 @@ class TestMainViewApp extends StatelessWidget {
 class MainViewApp extends StatelessWidget {
   final int selectIndex = 0;
 
-  Future<void> _neverSatisfied(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Rewind and remember'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('You will never be satisfied.'),
-                Text('You\’re like me. I’m never satisfied.'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Regret'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+  /*加载异步的网络数据*/
+  loadData() async {
+    String dataUrl = "https://jsonplaceholder.typicode.com/posts";
+    http.Response response = await http.get(dataUrl);
+//    print(response.body);
+    List list = json.decode(response.body);
+    print(list.elementAt(0));
   }
 
   @override
@@ -131,19 +117,50 @@ class MainViewApp extends StatelessWidget {
                   title: Text('flutter'))
             ]),
         body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Wrap(
+//            mainAxisAlignment: MainAxisAlignment.center,
+//            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               RaisedButton(
-              child: Text("tab测试"),
-              onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                  return MyTabTopWidget();
-                }));
-              },
-
-          ),
+                child: Text('测试网络异步请求'),
+                onPressed: () {
+                  loadData();
+                },
+              ),
+              Padding(
+                //上下左右各添加16像素补白
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  //显式指定对齐方式为左对齐，排除对齐干扰
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      //左边添加8像素补白
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text("Hello world"),
+                    ),
+                    Padding(
+                      //上下各添加8像素补白
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text("I am Jack"),
+                    ),
+                    Padding(
+                      // 分别指定四个方向的补白
+                      padding: const EdgeInsets.fromLTRB(20.0, .0, 20.0, 20.0),
+                      child: Text("Your friend"),
+                    )
+                  ],
+                ),
+              ),
+              RaisedButton(
+                child: Text("tab测试"),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return MyTabTopWidget();
+                  }));
+                },
+              ),
               RaisedButton(
                 child: Text('输入文本'),
                 onPressed: () {
@@ -164,13 +181,13 @@ class MainViewApp extends StatelessWidget {
               ),
               MaterialButton(
                 child: Text(
-                  'goTextView',
+                  '对话框',
                   style: TextStyle(fontSize: 18, color: Colors.red),
                 ),
                 onPressed: () {
 //                  Navigator.of(context).pushNamed("/goTextView");
 //                弹出对话框的方式
-                  _neverSatisfied(context);
+                  DialogUtils.neverSatisfied(context, "对话框标题", "对话框内容","对话框的按钮");
                 },
               ),
               MaterialButton(
@@ -204,8 +221,8 @@ class MainViewApp extends StatelessWidget {
                 Icons.star,
                 color: Colors.red[500],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Wrap(
+//                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   /*常规的文本类型*/
                   Text(
